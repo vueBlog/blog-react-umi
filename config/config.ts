@@ -12,7 +12,7 @@ export default defineConfig({
     hmr: true,
   },
   layout: {
-    name: 'Ant Design Pro',
+    name: '樊小书生',
     locale: true,
   },
   locale: {
@@ -40,6 +40,12 @@ export default defineConfig({
           component: './user/login',
         },
       ],
+    },
+    {
+      path: '/home',
+      name: 'home',
+      icon: 'home',
+      component: './Home',
     },
     {
       path: '/welcome',
@@ -70,7 +76,7 @@ export default defineConfig({
     },
     {
       path: '/',
-      redirect: '/welcome',
+      redirect: '/home',
     },
     {
       component: './404',

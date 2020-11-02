@@ -12,7 +12,8 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Ant Design Pro',
+  title: '樊小书生',
+  logo: 'https://www.fxss.work/vue-blog/img/logo.10ad6756.jpg',
   pwa: false,
   iconfontUrl: '',
 } as LayoutSettings & {
