@@ -5,7 +5,7 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request<API.CurrentUserRequest>('/api/vue-blog/tokenGetUserInfo', {
+  return request<API.CurrentUserRequest>('/tokenGetUserInfo', {
     method: 'post',
     data: {
       token: 'f2c3f0e3b81fe4d95d5902bc963262ea',

@@ -11,6 +11,8 @@ declare namespace API {
 
   export interface CurrentUserRequest {
     data?: CurrentUser;
+    isok?: boolean;
+    msg?: string;
   }
 
   export interface LoginStateType {
@@ -30,5 +32,25 @@ declare namespace API {
     clickClose?: boolean;
     extra: any;
     status: string;
+  }
+
+  export interface ListItemData {
+    articleAuthorId: number;
+    articleCreateTime: string;
+    articleId: number;
+    articleNature: number;
+    articleStart: number;
+    articleSubTitle: string;
+    articleTitle: string;
+    articleView: number;
+  }
+
+  export interface ListDataRequest {
+    data: {
+      list: Array<ListItemData>;
+      total: number;
+    };
+    isok?: boolean;
+    msg?: string;
   }
 }

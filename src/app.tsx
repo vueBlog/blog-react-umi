@@ -104,6 +104,7 @@ const errorHandler = (error: ResponseError) => {
 };
 
 export const request: RequestConfig = {
+  prefix: '/api/vue-blog',
   errorHandler,
   errorConfig: {
     adaptor: (resData) => {
