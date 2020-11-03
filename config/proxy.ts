@@ -8,7 +8,7 @@
 export default {
   dev: {
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: 'https://www.fxss.work',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

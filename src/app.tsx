@@ -15,7 +15,8 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const currentUser = await queryCurrent();
+      const result = await queryCurrent();
+      const currentUser = result.data;
       return currentUser;
     } catch (error) {
       history.push('/user/login');
@@ -50,7 +51,7 @@ export const layout = ({
       const { currentUser } = initialState;
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!currentUser?.userid && location.pathname !== '/user/login') {
+      if (!currentUser?.id && location.pathname !== '/user/login') {
         history.push('/user/login');
       }
     },
@@ -104,4 +105,13 @@ const errorHandler = (error: ResponseError) => {
 
 export const request: RequestConfig = {
   errorHandler,
+  errorConfig: {
+    adaptor: (resData) => {
+      return {
+        ...resData,
+        success: resData.isok,
+        errorMessage: resData.msg,
+      };
+    },
+  },
 };

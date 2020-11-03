@@ -1,17 +1,16 @@
 declare namespace API {
   export interface CurrentUser {
-    avatar?: string;
+    admin?: number;
+    authorHeadimg?: string;
+    authorIntroduce?: string;
+    authority?: number;
+    email?: string;
+    id?: number;
     name?: string;
-    title?: string;
-    group?: string;
-    signature?: string;
-    tags?: {
-      key: string;
-      label: string;
-    }[];
-    userid?: string;
-    access?: 'user' | 'guest' | 'admin';
-    unreadCount?: number;
+  }
+
+  export interface CurrentUserRequest {
+    data?: CurrentUser;
   }
 
   export interface LoginStateType {
