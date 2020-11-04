@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { history } from 'umi';
 import { useRequest } from 'ahooks';
-import { Divider } from 'antd';
+import { Divider, message } from 'antd';
 
 import ListTool from '@/components/List/ListTool';
 import ListShow from '@/components/List/ListShow';
@@ -17,23 +17,29 @@ export default (props: any): React.ReactNode => {
   const [count, setCount] = useState(props.location.query.count * 1 || 10);
 
   const [listData, setListData] = useState<API.ListItemData[]>([]);
+  const [listDataTotal, setListDataTotal] = useState(0);
   const { loading, run } = useRequest(
-    () =>
-      getListData({
+    () => {
+      document.documentElement.scrollTo(0, 0);
+      return getListData({
         justOriginal: original,
         order,
         count,
         page,
-      }),
+      });
+    },
     {
       manual: true,
       onSuccess: (result) => {
         if (result.isok) {
           setListData(result.data.list);
+          setListDataTotal(result.data.total);
+        } else {
+          message.error(result.msg);
         }
       },
       onError: (err) => {
-        console.log(err);
+        message.error(err);
       },
     },
   );
@@ -44,6 +50,8 @@ export default (props: any): React.ReactNode => {
       query: {
         original,
         order,
+        count,
+        page,
       },
     });
     run();
@@ -56,10 +64,19 @@ export default (props: any): React.ReactNode => {
         originalChange={setOriginal}
         order={order}
         orderChange={setOrder}
+        pageChange={setPage}
         {...props}
       />
       <Divider />
-      <ListShow loading={loading} listData={listData} count={count} />
+      <ListShow
+        loading={loading}
+        listData={listData}
+        total={listDataTotal}
+        page={page}
+        pageChange={setPage}
+        count={count}
+        countChange={setCount}
+      />
     </>
   );
 };

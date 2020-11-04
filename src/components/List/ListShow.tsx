@@ -1,14 +1,34 @@
 import React from 'react';
-import { List, Skeleton } from 'antd';
-// import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
+import * as moment from 'moment';
+import { List, Skeleton, Space } from 'antd';
+import { HighlightOutlined, LikeOutlined, EyeOutlined } from '@ant-design/icons';
 
 import styles from './ListShow.less';
 
-const ListShow: React.FC<{
+interface IconTextTS {
+  icon: any;
+  text: string | number;
+  title?: string;
+}
+const IconText: React.FC<IconTextTS> = ({ icon, text, title }) => (
+  <div title={title && `${title}: ${text}`}>
+    <Space>
+      {React.createElement(icon)}
+      {text}
+    </Space>
+  </div>
+);
+
+interface ListShowTS {
   loading: boolean;
   listData: API.ListItemData[];
+  total: number;
+  page: number;
+  pageChange: (value: number) => void;
   count: number;
-}> = ({ loading, listData, count }) => {
+  countChange?: (value: number) => void;
+}
+const ListShow: React.FC<ListShowTS> = ({ loading, listData, total, page, pageChange, count }) => {
   let currentListData;
   if (loading) {
     currentListData = [...Array(count).keys()].map((item, index) => {
@@ -32,24 +52,23 @@ const ListShow: React.FC<{
       itemLayout="vertical"
       size="large"
       pagination={{
-        onChange: (page) => {
-          console.log(page);
-        },
+        total,
+        current: page,
         pageSize: count,
+        showSizeChanger: false,
+        onChange: (current) => {
+          pageChange(current);
+        },
+        // onShowSizeChange: (current, pageSize) => {
+        //   pageChange(current);
+        //   countChange(pageSize);
+        // },
       }}
       dataSource={currentListData}
       renderItem={(item) =>
         loading ? (
-          <List.Item
-            className={styles.list_item}
-            key={item.articleId}
-            // actions={[
-            //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-            //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-            //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-            // ]}
-          >
-            <Skeleton title={false} loading={loading} active>
+          <List.Item className={styles.list_item} key={item.articleId}>
+            <Skeleton loading={loading} active>
               <List.Item.Meta
                 title={<a>{item.articleTitle}</a>}
                 description={item.articleSubTitle}
@@ -60,11 +79,26 @@ const ListShow: React.FC<{
           <List.Item
             className={styles.list_item}
             key={item.articleId}
-            // actions={[
-            //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-            //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-            //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-            // ]}
+            actions={[
+              <IconText
+                icon={HighlightOutlined}
+                text={moment(item.articleCreateTime).format('YYYY-MM-DD HH:mm:ss')}
+                title="发布时间"
+                key="list-vertical-eye-o"
+              />,
+              <IconText
+                icon={EyeOutlined}
+                text={item.articleView}
+                title="浏览数"
+                key="list-vertical-eye-o"
+              />,
+              <IconText
+                icon={LikeOutlined}
+                text={item.articleStart}
+                title="点赞数"
+                key="list-vertical-like-o"
+              />,
+            ]}
           >
             <List.Item.Meta title={<a>{item.articleTitle}</a>} description={item.articleSubTitle} />
           </List.Item>
