@@ -9,7 +9,8 @@ import { getListData } from '@/services/list';
 
 const ListAll: React.FC<{
   props: any;
-}> = ({ props }) => {
+  className: string;
+}> = ({ props, className }) => {
   const [original, setOriginal] = useState(!!(props.location.query.original === 'true'));
   const [order, setOrder] = useState(props.location.query.order * 1 || 0);
   const [page, setPage] = useState(props.location.query.page * 1 || 1);
@@ -57,7 +58,7 @@ const ListAll: React.FC<{
   }, [original, order, count, page]);
 
   return (
-    <>
+    <div className={className}>
       <ListTool
         original={original}
         originalChange={setOriginal}
@@ -76,7 +77,7 @@ const ListAll: React.FC<{
         count={count}
         countChange={setCount}
       />
-    </>
+    </div>
   );
 };
 

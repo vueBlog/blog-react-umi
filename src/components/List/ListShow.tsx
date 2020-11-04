@@ -1,6 +1,6 @@
 import React from 'react';
 import * as moment from 'moment';
-import { List, Skeleton, Space } from 'antd';
+import { List, Skeleton, Space, Tag } from 'antd';
 import { HighlightOutlined, LikeOutlined, EyeOutlined } from '@ant-design/icons';
 
 import styles from './ListShow.less';
@@ -100,7 +100,15 @@ const ListShow: React.FC<ListShowTS> = ({ loading, listData, total, page, pageCh
               />,
             ]}
           >
-            <List.Item.Meta title={<a>{item.articleTitle}</a>} description={item.articleSubTitle} />
+            <List.Item.Meta
+              title={
+                <a>
+                  <Tag color="blue">{['原创', '转载', '翻译'][item.articleNature]}</Tag>
+                  {item.articleTitle}
+                </a>
+              }
+              description={item.articleSubTitle}
+            />
           </List.Item>
         )
       }

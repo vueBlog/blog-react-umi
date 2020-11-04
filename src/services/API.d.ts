@@ -53,4 +53,20 @@ declare namespace API {
     isok?: boolean;
     msg?: string;
   }
+
+  export interface AsideItemData {
+    title: string;
+    type: number;
+    info: Array<{
+      id: number;
+      num: number;
+      title: string;
+    }>;
+  }
+
+  export interface AsideDataRequest {
+    data: Array<AsideItemData>;
+    isok?: boolean;
+    msg?: string;
+  }
 }
