@@ -65,7 +65,9 @@ declare namespace API {
   }
 
   export interface AsideDataRequest {
-    data: Array<AsideItemData>;
+    data: {
+      list: Array<AsideItemData>;
+    };
     isok?: boolean;
     msg?: string;
   }

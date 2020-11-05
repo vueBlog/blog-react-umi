@@ -50,7 +50,7 @@ const ListAll: React.FC<{
       query: {
         original,
         order,
-        count,
+        // count,
         page,
       },
     });
