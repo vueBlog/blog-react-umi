@@ -1,4 +1,4 @@
-import { LockTwoTone, MailTwoTone, MobileTwoTone, UserOutlined } from '@ant-design/icons';
+import { LockTwoTone, MobileTwoTone, MailOutlined } from '@ant-design/icons';
 import React from 'react';
 import styles from './index.less';
 
@@ -8,7 +8,7 @@ export default {
       size: 'large',
       id: 'username',
       prefix: (
-        <UserOutlined
+        <MailOutlined
           style={{
             color: '#1890ff',
           }}
@@ -53,19 +53,6 @@ export default {
       {
         pattern: /^1\d{10}$/,
         message: 'Wrong mobile number format!',
-      },
-    ],
-  },
-  Captcha: {
-    props: {
-      size: 'large',
-      prefix: <MailTwoTone className={styles.prefixIcon} />,
-      placeholder: 'captcha',
-    },
-    rules: [
-      {
-        required: true,
-        message: 'Please enter Captcha!',
       },
     ],
   },

@@ -34,7 +34,7 @@ export const footerLink: footerLinkTS[] | false = [
  * 座右铭
  * 不想展示座右铭设置为：false
  */
-export const motto: string | false = '樊小书生的博客，多看代码，多看书，付出总会有收获的。';
+export const motto: string | false = '多看代码，多看书，付出总会有收获的。';
 
 /**
  * 作者信息

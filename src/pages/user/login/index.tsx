@@ -1,5 +1,4 @@
-import { AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined } from '@ant-design/icons';
-import { Alert, Checkbox, message } from 'antd';
+import { Alert, message } from 'antd';
 import React, { useState } from 'react';
 import {
   Link,
@@ -8,13 +7,15 @@ import {
   history,
   History,
 } from 'umi';
-import logo from '@/assets/logo.svg';
+import logo from '@/assets/logo.jpg';
 import { LoginParamsType, fakeAccountLogin } from '@/services/login';
 import Footer from '@/components/Footer';
+import defaultSettings from '../../../../config/defaultSettings';
+import { motto } from '../../../../config/footerConfig';
 import LoginFrom from './components/Login';
 import styles from './style.less';
 
-const { Tab, Username, Password, Mobile, Captcha, Submit } = LoginFrom;
+const { Tab, Username, Password, Mobile, Submit } = LoginFrom;
 
 const LoginMessage: React.FC<{
   content: string;
@@ -48,14 +49,13 @@ const Login: React.FC<{}> = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginStateType>({});
   const [submitting, setSubmitting] = useState(false);
   const { initialState, setInitialState } = useModel('@@initialState');
-  const [autoLogin, setAutoLogin] = useState(true);
   const [type, setType] = useState<string>('account');
   const handleSubmit = async (values: LoginParamsType) => {
     setSubmitting(true);
     try {
       // 登录
       const msg = await fakeAccountLogin({ ...values, type });
-      if (msg.status === 'ok' && initialState) {
+      if (msg.isok && initialState) {
         message.success('登录成功！');
         const currentUser = await initialState?.fetchUserInfo();
         setInitialState({
@@ -73,7 +73,7 @@ const Login: React.FC<{}> = () => {
     setSubmitting(false);
   };
 
-  const { status, type: loginType } = userLoginState;
+  const { isok: status, msg: loginType } = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -83,32 +83,32 @@ const Login: React.FC<{}> = () => {
           <div className={styles.header}>
             <Link to="/">
               <img alt="logo" className={styles.logo} src={logo} />
-              <span className={styles.title}>Ant Design</span>
+              <span className={styles.title}>{defaultSettings.title}</span>
             </Link>
           </div>
-          <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+          {motto && <div className={styles.desc}>{motto}</div>}
         </div>
 
         <div className={styles.main}>
           <LoginFrom activeKey={type} onTabChange={setType} onSubmit={handleSubmit}>
             <Tab key="account" tab="账户密码登录">
-              {status === 'error' && loginType === 'account' && !submitting && (
-                <LoginMessage content="账户或密码错误（admin/ant.design）" />
+              {!status && loginType === 'account' && !submitting && (
+                <LoginMessage content="账户或密码错误" />
               )}
 
               <Username
                 name="username"
-                placeholder="用户名: admin or user"
+                placeholder="请输入邮箱"
                 rules={[
                   {
                     required: true,
-                    message: '请输入用户名!',
+                    message: '请输入邮箱!',
                   },
                 ]}
               />
               <Password
                 name="password"
-                placeholder="密码: ant.design"
+                placeholder="请输入密码"
                 rules={[
                   {
                     required: true,
@@ -118,7 +118,7 @@ const Login: React.FC<{}> = () => {
               />
             </Tab>
             <Tab key="mobile" tab="手机号登录">
-              {status === 'error' && loginType === 'mobile' && !submitting && (
+              {!status && loginType === 'mobile' && !submitting && (
                 <LoginMessage content="验证码错误" />
               )}
               <Mobile
@@ -135,42 +135,8 @@ const Login: React.FC<{}> = () => {
                   },
                 ]}
               />
-              <Captcha
-                name="captcha"
-                placeholder="验证码"
-                countDown={120}
-                getCaptchaButtonText=""
-                getCaptchaSecondText="秒"
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入验证码！',
-                  },
-                ]}
-              />
             </Tab>
-            <div>
-              <Checkbox checked={autoLogin} onChange={(e) => setAutoLogin(e.target.checked)}>
-                自动登录
-              </Checkbox>
-              <a
-                style={{
-                  float: 'right',
-                }}
-              >
-                忘记密码
-              </a>
-            </div>
             <Submit loading={submitting}>登录</Submit>
-            <div className={styles.other}>
-              其他登录方式
-              <AlipayCircleOutlined className={styles.icon} />
-              <TaobaoCircleOutlined className={styles.icon} />
-              <WeiboCircleOutlined className={styles.icon} />
-              <Link className={styles.register} to="/user/register">
-                注册账户
-              </Link>
-            </div>
           </LoginFrom>
         </div>
       </div>
