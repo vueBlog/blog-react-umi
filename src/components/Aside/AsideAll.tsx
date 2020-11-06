@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useRequest } from 'ahooks';
 import { message, Card } from 'antd';
+import { Link } from 'umi';
 
 import { getAsideData } from '@/services/aside';
+import styles from './AsideAll.less';
 
 const initAsideData: API.AsideItemData[] = [];
 for (let index: number = 0; index < 4; index += 1) {
@@ -50,9 +52,14 @@ const AsideAll: React.FC<{
           loading={loading}
           style={{ width: 266, marginBottom: 24 }}
         >
-          <p>Card content</p>
-          <p>Card content</p>
-          <p>Card content</p>
+          {item.info.map((itemInfo) => (
+            <Link to="/list" key={itemInfo.id} className={styles.card_item}>
+              <span className={styles.card_item_number}>{itemInfo.num} views</span>
+              <div title={itemInfo.title} className={styles.card_item_title}>
+                {itemInfo.title}
+              </div>
+            </Link>
+          ))}
         </Card>
       ))}
     </div>
