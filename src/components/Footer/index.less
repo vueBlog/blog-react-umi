@@ -1,0 +1,32 @@
+@import '~antd/lib/style/themes/default.less';
+
+.footer_box {
+  padding: @padding-lg 0;
+  text-align: center;
+  background-color: #fff;
+  border-top: 1px solid @border-color-base;
+
+  .footer_row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: @line-height-base * 1.3;
+
+    .footer_row_title {
+      color: @text-color;
+    }
+
+    .footer_row_link {
+      margin: 0 @margin-xs;
+      color: @text-color;
+      &:hover {
+        color: @primary-color;
+      }
+    }
+
+    .footer_row_item {
+      margin: 0 @margin-xs;
+      color: @text-color;
+    }
+  }
+}
