@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import { ResponseError } from 'umi-request';
 import { queryCurrent } from './services/user';
 import defaultSettings from '../config/defaultSettings';
+import noAccessRoutes from '../config/noAccessRoutes';
 
 export async function getInitialState(): Promise<{
   settings?: LayoutSettings;
@@ -24,7 +25,7 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
   // 如果是登录页面，不执行
-  if (history.location.pathname !== '/user/login') {
+  if (!noAccessRoutes.includes(history.location.pathname)) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -51,7 +52,7 @@ export const layout = ({
       const { currentUser } = initialState;
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!currentUser?.id && location.pathname !== '/user/login') {
+      if (!noAccessRoutes.includes(location.pathname) && !currentUser?.id) {
         history.push('/user/login');
       }
     },

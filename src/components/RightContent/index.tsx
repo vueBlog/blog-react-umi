@@ -55,7 +55,7 @@ const GlobalHeaderRight: React.FC<{}> = () => {
           <QuestionCircleOutlined />
         </span>
       </Tooltip> */}
-      <Avatar />
+      {initialState.currentUser && <Avatar />}
       {REACT_APP_ENV && (
         <span>
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
