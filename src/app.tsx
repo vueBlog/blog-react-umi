@@ -1,7 +1,7 @@
 import React from 'react';
 import { BasicLayoutProps, Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { notification } from 'antd';
-import { history, RequestConfig } from 'umi';
+import { history, RequestConfig, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { ResponseError } from 'umi-request';
@@ -44,7 +44,36 @@ export const layout = ({
 }: {
   initialState: { settings?: LayoutSettings; currentUser?: API.CurrentUser };
 }): BasicLayoutProps => {
+  // 根据权限过滤路由
+  const fiterMenu = (item: any, dom: any) => {
+    const domBody =
+      item.children && item.children.length ? (
+        <div className="ant-menu-item-top">{dom}</div>
+      ) : (
+        <Link to={item.path} className="ant-menu-item-top">
+          {dom}
+        </Link>
+      );
+    let res;
+    if (item.access) {
+      if (initialState.currentUser?.admin === 1 && item.access === 'canAdmin') {
+        res = domBody;
+      }
+      if (
+        (initialState.currentUser?.admin === 1 || initialState.currentUser?.authority === 1) &&
+        item.access === 'canUser'
+      ) {
+        res = domBody;
+      }
+    } else {
+      res = domBody;
+    }
+    return res;
+  };
+
   return {
+    menuItemRender: (item, dom) => fiterMenu(item, dom),
+    subMenuItemRender: (item, dom) => fiterMenu(item, dom),
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     footerRender: () => <Footer />,

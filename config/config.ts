@@ -51,6 +51,7 @@ export default defineConfig({
       path: '/welcome',
       name: 'welcome',
       icon: 'smile',
+      access: 'canUser',
       component: './Welcome',
     },
     {
@@ -64,6 +65,7 @@ export default defineConfig({
           path: '/admin/sub-page',
           name: 'sub-page',
           icon: 'smile',
+          access: 'canAdmin',
           component: './Welcome',
         },
       ],

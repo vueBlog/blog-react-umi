@@ -2,11 +2,13 @@ import {
   // Tooltip,
   Tag,
   Space,
+  Button,
 } from 'antd';
 // import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 import {
   useModel,
+  Link,
   // SelectLang
 } from 'umi';
 import Avatar from './AvatarDropdown';
@@ -55,7 +57,15 @@ const GlobalHeaderRight: React.FC<{}> = () => {
           <QuestionCircleOutlined />
         </span>
       </Tooltip> */}
-      {initialState.currentUser && <Avatar />}
+      {initialState.currentUser ? (
+        <Avatar />
+      ) : (
+        <Button type="link">
+          <Link to="/user/login" replace>
+            登录
+          </Link>
+        </Button>
+      )}
       {REACT_APP_ENV && (
         <span>
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
