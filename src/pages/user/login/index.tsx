@@ -10,12 +10,14 @@ import {
 import logo from '@/assets/logo.jpg';
 import { LoginParamsType, fakeAccountLogin } from '@/services/login';
 import Footer from '@/components/Footer';
+import md5 from 'blueimp-md5';
+import Cookies from 'js-cookie';
 import defaultSettings from '../../../../config/defaultSettings';
 import { motto } from '../../../../config/footerConfig';
 import LoginFrom from './components/Login';
 import styles from './style.less';
 
-const { Tab, Username, Password, Mobile, Submit } = LoginFrom;
+const { Tab, Email, Password, Username, Submit } = LoginFrom;
 
 const LoginMessage: React.FC<{
   content: string;
@@ -49,26 +51,47 @@ const Login: React.FC<{}> = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginStateType>({});
   const [submitting, setSubmitting] = useState(false);
   const { initialState, setInitialState } = useModel('@@initialState');
-  const [type, setType] = useState<string>('account');
+  const [type, setType] = useState<string>('signIn');
   const handleSubmit = async (values: LoginParamsType) => {
     setSubmitting(true);
     try {
       // 登录
-      const msg = await fakeAccountLogin({ ...values, type });
-      if (msg.isok && initialState) {
-        message.success('登录成功！');
-        const currentUser = await initialState?.fetchUserInfo();
-        setInitialState({
-          ...initialState,
-          currentUser,
-        });
-        replaceGoto();
+      const res = await fakeAccountLogin({ ...values, password: md5(values.password), type });
+      if (res.isok && initialState) {
+        if (type === 'signIn') {
+          const successMsg: string = '登录成功！';
+          Cookies.set('vueBlogToken', res.data.token, { expires: 7, path: '' });
+          message.success(successMsg);
+          const currentUser = await initialState?.fetchUserInfo();
+          setInitialState({
+            ...initialState,
+            currentUser,
+          });
+          replaceGoto();
+          return;
+        }
+        if (res.data.admin) {
+          const successMsg: string = '注册成功，现在去写文章！';
+          Cookies.set('vueBlogToken', res.data.token, { expires: 7, path: '' });
+          message.success(successMsg);
+          const currentUser = await initialState?.fetchUserInfo();
+          setInitialState({
+            ...initialState,
+            currentUser,
+          });
+          replaceGoto();
+          return;
+        }
+        const successMsg: string = '注册成功，等待管理员同意！';
+        message.success(successMsg);
+        history.replace('/');
         return;
       }
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      setUserLoginState(res);
     } catch (error) {
-      message.error('登录失败，请重试！');
+      const errorMsg: string = type === 'signIn' ? '登录失败，请重试！' : '注册失败，请重试！';
+      message.error(errorMsg);
     }
     setSubmitting(false);
   };
@@ -91,18 +114,22 @@ const Login: React.FC<{}> = () => {
 
         <div className={styles.main}>
           <LoginFrom activeKey={type} onTabChange={setType} onSubmit={handleSubmit}>
-            <Tab key="account" tab="账户密码登录">
-              {!status && loginType === 'account' && !submitting && (
-                <LoginMessage content="账户或密码错误" />
+            <Tab key="signIn" tab="登录">
+              {!status && loginType === 'signIn' && !submitting && (
+                <LoginMessage content="邮箱或密码错误" />
               )}
 
-              <Username
-                name="username"
+              <Email
+                name="email"
                 placeholder="请输入邮箱"
                 rules={[
                   {
                     required: true,
                     message: '请输入邮箱!',
+                  },
+                  {
+                    type: 'email',
+                    message: '请输入正确的邮箱！',
                   },
                 ]}
               />
@@ -117,21 +144,38 @@ const Login: React.FC<{}> = () => {
                 ]}
               />
             </Tab>
-            <Tab key="mobile" tab="手机号登录">
-              {!status && loginType === 'mobile' && !submitting && (
-                <LoginMessage content="验证码错误" />
-              )}
-              <Mobile
-                name="mobile"
-                placeholder="手机号"
+            <Tab key="register" tab="注册">
+              <Username
+                name="name"
+                placeholder="请输入用户名称"
                 rules={[
                   {
                     required: true,
-                    message: '请输入手机号！',
+                    message: '请输入用户名称!',
+                  },
+                ]}
+              />
+              <Email
+                name="email"
+                placeholder="请输入邮箱"
+                rules={[
+                  {
+                    required: true,
+                    message: '请输入邮箱!',
                   },
                   {
-                    pattern: /^1\d{10}$/,
-                    message: '手机号格式错误！',
+                    type: 'email',
+                    message: '请输入正确的邮箱！',
+                  },
+                ]}
+              />
+              <Password
+                name="password"
+                placeholder="请输入密码"
+                rules={[
+                  {
+                    required: true,
+                    message: '请输入密码！',
                   },
                 ]}
               />

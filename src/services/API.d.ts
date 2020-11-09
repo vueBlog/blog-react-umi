@@ -18,6 +18,10 @@ declare namespace API {
   export interface LoginStateType {
     isok?: boolean;
     msg?: string;
+    data: {
+      token?: string;
+      admin?: boolean;
+    };
   }
 
   export interface NoticeIconData {

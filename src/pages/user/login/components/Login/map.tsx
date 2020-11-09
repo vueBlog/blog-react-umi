@@ -1,4 +1,4 @@
-import { LockTwoTone, MobileTwoTone, MailOutlined } from '@ant-design/icons';
+import { LockTwoTone, MobileTwoTone, MailOutlined, UserOutlined } from '@ant-design/icons';
 import React from 'react';
 import styles from './index.less';
 
@@ -8,6 +8,27 @@ export default {
       size: 'large',
       id: 'username',
       prefix: (
+        <UserOutlined
+          style={{
+            color: '#1890ff',
+          }}
+          className={styles.prefixIcon}
+        />
+      ),
+      placeholder: 'username',
+    },
+    rules: [
+      {
+        required: true,
+        message: 'Please enter username!',
+      },
+    ],
+  },
+  Email: {
+    props: {
+      size: 'large',
+      id: 'email',
+      prefix: (
         <MailOutlined
           style={{
             color: '#1890ff',
@@ -15,12 +36,12 @@ export default {
           className={styles.prefixIcon}
         />
       ),
-      placeholder: 'admin',
+      placeholder: 'email',
     },
     rules: [
       {
         required: true,
-        message: 'Please enter username!',
+        message: 'Please enter Email!',
       },
     ],
   },
