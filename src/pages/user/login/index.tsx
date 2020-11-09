@@ -70,7 +70,7 @@ const Login: React.FC<{}> = () => {
           replaceGoto();
           return;
         }
-        if (res.data.admin) {
+        if (res.data?.admin) {
           const successMsg: string = '注册成功，现在去写文章！';
           Cookies.set('vueBlogToken', res.data.token, { expires: 7, path: '' });
           message.success(successMsg);

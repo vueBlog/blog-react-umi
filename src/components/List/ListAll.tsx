@@ -9,7 +9,7 @@ import { getListData } from '@/services/list';
 
 const ListAll: React.FC<{
   props: any;
-  className: string;
+  className?: string;
 }> = ({ props, className }) => {
   const [original, setOriginal] = useState(!!(props.location.query.original === 'true'));
   const [order, setOrder] = useState(props.location.query.order * 1 || 0);
@@ -52,6 +52,7 @@ const ListAll: React.FC<{
         order,
         // count,
         page,
+        columnId: 6,
       },
     });
     run();

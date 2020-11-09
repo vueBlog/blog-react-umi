@@ -22,7 +22,7 @@ for (let index: number = 0; index < 4; index += 1) {
 }
 
 const AsideAll: React.FC<{
-  className: string;
+  className?: string;
 }> = ({ className }) => {
   const [asideData, setAsideData] = useState<API.AsideItemData[]>(initAsideData);
   const { loading, run } = useRequest(() => getAsideData(), {

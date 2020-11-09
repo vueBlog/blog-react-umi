@@ -16,7 +16,7 @@ declare namespace API {
   }
 
   export interface LoginStateType {
-    data: {
+    data?: {
       token?: string;
       admin?: boolean;
     };
@@ -71,6 +71,18 @@ declare namespace API {
   export interface AsideDataRequest {
     data: {
       list: Array<AsideItemData>;
+    };
+    isok?: boolean;
+    msg?: string;
+  }
+
+  export interface ColumnDataRequest {
+    data: {
+      columnContent: string;
+      columnId: number;
+      columnNumber: number;
+      columnTitle: string;
+      time: string;
     };
     isok?: boolean;
     msg?: string;
