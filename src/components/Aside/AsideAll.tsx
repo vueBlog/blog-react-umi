@@ -6,30 +6,45 @@ import { Link } from 'umi';
 import { getAsideData } from '@/services/aside';
 import styles from './AsideAll.less';
 
-const initAsideData: API.AsideItemData[] = [];
-for (let index: number = 0; index < 4; index += 1) {
-  initAsideData.push({
-    title: '',
-    type: index,
-    info: [
-      {
-        id: index,
-        num: index,
-        title: '',
-      },
-    ],
-  });
-}
-
 const AsideAll: React.FC<{
+  props: any;
   className?: string;
-}> = ({ className }) => {
+}> = ({ props, className }) => {
+  const { location } = props;
+
+  const initAsideData: API.AsideItemData[] = [];
+  let asideDataLength = 0;
+  if (location.pathname === '/home') {
+    asideDataLength = 4;
+  } else if (location.pathname === '/list') {
+    asideDataLength = 2;
+  }
+
+  for (let index: number = 0; index < asideDataLength; index += 1) {
+    initAsideData.push({
+      title: '',
+      type: index,
+      info: [
+        {
+          id: index,
+          num: index,
+          title: '',
+        },
+      ],
+    });
+  }
+
   const [asideData, setAsideData] = useState<API.AsideItemData[]>(initAsideData);
   const { loading, run } = useRequest(() => getAsideData(), {
     manual: true,
     onSuccess: (result) => {
       if (result.isok) {
-        setAsideData(result.data.list);
+        if (location.pathname === '/home') {
+          setAsideData(result.data.list);
+        } else if (location.pathname === '/list') {
+          const data = result.data.list.filter((item) => [2, 4].includes(item.type));
+          setAsideData(data);
+        }
       } else {
         message.error(result.msg);
       }
@@ -53,7 +68,15 @@ const AsideAll: React.FC<{
           style={{ width: 266, marginBottom: 24 }}
         >
           {item.info.map((itemInfo) => (
-            <Link to="/list" key={itemInfo.id} className={styles.card_item}>
+            <Link
+              to={
+                [2, 4].includes(item.type)
+                  ? `/list?${item.type === 2 ? 'columnId' : 'dateTime'}=${itemInfo.id}`
+                  : '/detail'
+              }
+              key={itemInfo.id}
+              className={styles.card_item}
+            >
               <span className={styles.card_item_number}>{itemInfo.num} views</span>
               <div title={itemInfo.title} className={styles.card_item_title}>
                 {itemInfo.title}

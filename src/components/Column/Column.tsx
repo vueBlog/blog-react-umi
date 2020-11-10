@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRequest } from 'ahooks';
+import { history } from 'umi';
 import { message, Divider, Skeleton } from 'antd';
 import { getColumnData } from '@/services/column';
 
@@ -17,7 +18,7 @@ const ColumnDetail: React.FC<{
     time: '',
   });
 
-  const [columnId] = useState(props.location.query.columnId);
+  const [columnId, setColumnId] = useState<string>(props.location.query.columnId);
 
   const { loading, run } = useRequest(() => getColumnData(columnId), {
     manual: true,
@@ -35,7 +36,17 @@ const ColumnDetail: React.FC<{
 
   useEffect(() => {
     run();
-  }, []);
+  }, [columnId]);
+
+  useEffect(() => {
+    const unlisten = history.listen((locationQuery: any) => {
+      const queryData = locationQuery.query;
+      if (queryData.columnId && queryData.columnId !== columnId) {
+        setColumnId(queryData.columnId);
+      }
+    });
+    return () => unlisten();
+  });
 
   return (
     <>

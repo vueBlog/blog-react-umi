@@ -19,8 +19,8 @@ const ListAll: React.FC<{
   const [page, setPage] = useState(query.page * 1 || 1);
   const [count, setCount] = useState(query.count * 1 || 10);
 
-  const [columnId] = useState<string>(query.columnId);
-  const [dateTime] = useState<string>(query.dateTime);
+  const [columnId, setColumnId] = useState<string>(query.columnId);
+  const [dateTime, setDateTime] = useState<string>(query.dateTime);
 
   const [listData, setListData] = useState<API.ListItemData[]>([]);
   const [listDataTotal, setListDataTotal] = useState(0);
@@ -78,7 +78,28 @@ const ListAll: React.FC<{
       query: queryData,
     });
     run();
-  }, [original, order, count, page, columnId]);
+  }, [original, order, count, page, columnId, dateTime]);
+
+  useEffect(() => {
+    const unlisten = history.listen((locationQuery: any) => {
+      const queryData = locationQuery.query;
+      if (queryData.columnId && queryData.columnId !== columnId) {
+        setColumnId(queryData.columnId);
+        setPage(1);
+        if (dateTime) {
+          setDateTime('');
+        }
+      }
+      if (queryData.dateTime && queryData.dateTime !== dateTime) {
+        setDateTime(queryData.dateTime);
+        setPage(1);
+        if (columnId) {
+          setColumnId('');
+        }
+      }
+    });
+    return () => unlisten();
+  });
 
   return (
     <div className={className}>
