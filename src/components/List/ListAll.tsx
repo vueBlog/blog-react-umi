@@ -16,6 +16,8 @@ const ListAll: React.FC<{
   const [page, setPage] = useState(props.location.query.page * 1 || 1);
   const [count, setCount] = useState(props.location.query.count * 1 || 10);
 
+  const [columnId] = useState<string>(props.location.query.columnId);
+
   const [listData, setListData] = useState<API.ListItemData[]>([]);
   const [listDataTotal, setListDataTotal] = useState(0);
   const { loading, run } = useRequest(
@@ -45,18 +47,23 @@ const ListAll: React.FC<{
   );
 
   useEffect(() => {
+    const query = {
+      original,
+      order,
+      // count,
+      page,
+    };
+
+    if (columnId) {
+      Object.assign(query, { columnId });
+    }
+
     history.push({
       pathname: '/home',
-      query: {
-        original,
-        order,
-        // count,
-        page,
-        columnId: 6,
-      },
+      query,
     });
     run();
-  }, [original, order, count, page]);
+  }, [original, order, count, page, columnId]);
 
   return (
     <div className={className}>
