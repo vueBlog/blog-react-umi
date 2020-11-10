@@ -17,18 +17,28 @@ const ListAll: React.FC<{
   const [count, setCount] = useState(props.location.query.count * 1 || 10);
 
   const [columnId] = useState<string>(props.location.query.columnId);
+  const [dateTime] = useState<string>(props.location.query.dateTime);
 
   const [listData, setListData] = useState<API.ListItemData[]>([]);
   const [listDataTotal, setListDataTotal] = useState(0);
   const { loading, run } = useRequest(
     () => {
       document.documentElement.scrollTo(0, 0);
-      return getListData({
+
+      const query = {
         justOriginal: original,
         order,
         count,
         page,
-      });
+      };
+      if (columnId) {
+        Object.assign(query, { columnId });
+      }
+      if (dateTime) {
+        Object.assign(query, { dateTime });
+      }
+
+      return getListData(query);
     },
     {
       manual: true,
@@ -53,9 +63,11 @@ const ListAll: React.FC<{
       // count,
       page,
     };
-
     if (columnId) {
       Object.assign(query, { columnId });
+    }
+    if (dateTime) {
+      Object.assign(query, { dateTime });
     }
 
     history.push({
