@@ -51,7 +51,7 @@ const ColumnDetail: React.FC<{
   return (
     <>
       <div className={styles.column_body}>
-        <Skeleton loading={loading} title={false} active>
+        <Skeleton paragraph={{ rows: 4 }} loading={loading} title={false} active>
           <div className={styles.column_row}>
             <span>专栏名称：</span>
             <span>{columnData.columnTitle}</span>
