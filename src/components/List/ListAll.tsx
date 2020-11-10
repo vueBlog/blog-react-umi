@@ -11,13 +11,16 @@ const ListAll: React.FC<{
   props: any;
   className?: string;
 }> = ({ props, className }) => {
-  const [original, setOriginal] = useState(!!(props.location.query.original === 'true'));
-  const [order, setOrder] = useState(props.location.query.order * 1 || 0);
-  const [page, setPage] = useState(props.location.query.page * 1 || 1);
-  const [count, setCount] = useState(props.location.query.count * 1 || 10);
+  const { location } = props;
+  const { query } = location;
 
-  const [columnId] = useState<string>(props.location.query.columnId);
-  const [dateTime] = useState<string>(props.location.query.dateTime);
+  const [original, setOriginal] = useState(!!(query.original === 'true'));
+  const [order, setOrder] = useState(query.order * 1 || 0);
+  const [page, setPage] = useState(query.page * 1 || 1);
+  const [count, setCount] = useState(query.count * 1 || 10);
+
+  const [columnId] = useState<string>(query.columnId);
+  const [dateTime] = useState<string>(query.dateTime);
 
   const [listData, setListData] = useState<API.ListItemData[]>([]);
   const [listDataTotal, setListDataTotal] = useState(0);
@@ -25,20 +28,20 @@ const ListAll: React.FC<{
     () => {
       document.documentElement.scrollTo(0, 0);
 
-      const query = {
+      const queryData = {
         justOriginal: original,
         order,
         count,
         page,
       };
       if (columnId) {
-        Object.assign(query, { columnId });
+        Object.assign(queryData, { columnId });
       }
       if (dateTime) {
-        Object.assign(query, { dateTime });
+        Object.assign(queryData, { dateTime });
       }
 
-      return getListData(query);
+      return getListData(queryData);
     },
     {
       manual: true,
@@ -57,22 +60,22 @@ const ListAll: React.FC<{
   );
 
   useEffect(() => {
-    const query = {
+    const queryData = {
       original,
       order,
       // count,
       page,
     };
     if (columnId) {
-      Object.assign(query, { columnId });
+      Object.assign(queryData, { columnId });
     }
     if (dateTime) {
-      Object.assign(query, { dateTime });
+      Object.assign(queryData, { dateTime });
     }
 
     history.push({
-      pathname: '/home',
-      query,
+      pathname: location.pathname,
+      query: queryData,
     });
     run();
   }, [original, order, count, page, columnId]);

@@ -48,6 +48,12 @@ export default defineConfig({
       component: './Home',
     },
     {
+      path: '/list',
+      name: 'list',
+      icon: 'ContainerOutlined',
+      component: './List',
+    },
+    {
       path: '/welcome',
       name: 'welcome',
       icon: 'smile',
@@ -73,7 +79,7 @@ export default defineConfig({
     {
       name: 'list.table-list',
       icon: 'table',
-      path: '/list',
+      path: '/list-table',
       component: './ListTableList',
     },
     {
