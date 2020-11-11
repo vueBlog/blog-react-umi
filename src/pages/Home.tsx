@@ -7,11 +7,11 @@ import styles from './Home.less';
 export default (props: any): React.ReactNode => (
   <div className={styles.page_content}>
     <div className={styles.page_aside}>
-      <AsideAll props={props} />
+      <AsideAll />
     </div>
     <div className={styles.page_body}>
-      {props.location.query.columnId && <ColumnDetail props={props} />}
-      <ListAll props={props} />
+      {props.location.query.columnId && <ColumnDetail />}
+      <ListAll />
     </div>
   </div>
 );

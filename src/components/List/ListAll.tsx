@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { history } from 'umi';
+import { history, useLocation } from 'umi';
 import { useRequest } from 'ahooks';
 import { Divider, message } from 'antd';
 
@@ -8,10 +8,9 @@ import ListShow from '@/components/List/ListShow';
 import { getListData } from '@/services/list';
 
 const ListAll: React.FC<{
-  props: any;
   className?: string;
-}> = ({ props, className }) => {
-  const { location } = props;
+}> = ({ className }) => {
+  const location: any = useLocation();
   const { query } = location;
 
   const [original, setOriginal] = useState(!!(query.original === 'true'));
@@ -109,7 +108,6 @@ const ListAll: React.FC<{
         order={order}
         orderChange={setOrder}
         pageChange={setPage}
-        {...props}
       />
       <Divider />
       <ListShow

@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useRequest } from 'ahooks';
 import { message, Card } from 'antd';
-import { Link } from 'umi';
+import { Link, useLocation } from 'umi';
 
 import { getAsideData } from '@/services/aside';
 import styles from './AsideAll.less';
 
 const AsideAll: React.FC<{
-  props: any;
   className?: string;
-}> = ({ props, className }) => {
-  const { location } = props;
+}> = ({ className }) => {
+  const location: any = useLocation();
 
   const initAsideData: API.AsideItemData[] = [];
   let asideDataLength = 0;

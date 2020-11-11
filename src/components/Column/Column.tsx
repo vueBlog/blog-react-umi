@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useRequest } from 'ahooks';
-import { history } from 'umi';
+import { history, useLocation } from 'umi';
 import { message, Divider, Skeleton } from 'antd';
 import { getColumnData } from '@/services/column';
 
 import styles from './Column.less';
 
 const ColumnDetail: React.FC<{
-  props: any;
   className?: string;
-}> = ({ props }) => {
+}> = () => {
   const [columnData, setColumnData] = useState({
     columnContent: '',
     columnId: 0,
@@ -18,7 +17,9 @@ const ColumnDetail: React.FC<{
     time: '',
   });
 
-  const [columnId, setColumnId] = useState<string>(props.location.query.columnId);
+  const location: any = useLocation();
+
+  const [columnId, setColumnId] = useState<string>(location.query.columnId);
 
   const { loading, run } = useRequest(() => getColumnData(columnId), {
     manual: true,
