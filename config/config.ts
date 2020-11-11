@@ -42,16 +42,25 @@ export default defineConfig({
       ],
     },
     {
-      path: '/home',
-      name: 'home',
-      icon: 'home',
-      component: './Home',
-    },
-    {
-      path: '/list',
-      name: 'list',
-      icon: 'ContainerOutlined',
-      component: './List',
+      path: '/',
+      component: '../layout/index',
+      menu: {
+        flatMenu: true,
+      },
+      routes: [
+        {
+          path: '/home',
+          name: 'home',
+          icon: 'home',
+          component: './Home',
+        },
+        {
+          path: '/list',
+          name: 'list',
+          icon: 'ContainerOutlined',
+          component: './List',
+        },
+      ],
     },
     {
       path: '/welcome',

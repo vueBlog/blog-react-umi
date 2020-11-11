@@ -1,17 +1,11 @@
 import React from 'react';
 import ListAll from '@/components/List/ListAll';
-import AsideAll from '@/components/Aside/AsideAll';
 import ColumnDetail from '@/components/Column/Column';
-import styles from './Home.less';
+// import styles from './Home.less';
 
 export default (props: any): React.ReactNode => (
-  <div className={styles.page_content}>
-    <div className={styles.page_aside}>
-      <AsideAll />
-    </div>
-    <div className={styles.page_body}>
-      {props.location.query.columnId && <ColumnDetail />}
-      <ListAll />
-    </div>
-  </div>
+  <>
+    {props.location.query.columnId && <ColumnDetail />}
+    <ListAll />
+  </>
 );

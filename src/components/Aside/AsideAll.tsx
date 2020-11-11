@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRequest } from 'ahooks';
 import { message, Card } from 'antd';
-import { Link, useLocation } from 'umi';
+import { history, Link, useLocation } from 'umi';
 
 import { getAsideData } from '@/services/aside';
 import styles from './AsideAll.less';
@@ -12,6 +12,7 @@ const AsideAll: React.FC<{
   const location: any = useLocation();
 
   const initAsideData: API.AsideItemData[] = [];
+  const [allAsideData, setAllAsideData] = useState<API.AsideItemData[]>([]);
   let asideDataLength = 0;
   if (location.pathname === '/home') {
     asideDataLength = 4;
@@ -38,6 +39,7 @@ const AsideAll: React.FC<{
     manual: true,
     onSuccess: (result) => {
       if (result.isok) {
+        setAllAsideData(result.data.list);
         if (location.pathname === '/home') {
           setAsideData(result.data.list);
         } else if (location.pathname === '/list') {
@@ -56,6 +58,18 @@ const AsideAll: React.FC<{
   useEffect(() => {
     run();
   }, []);
+
+  useEffect(() => {
+    const unlisten = history.listen((locationQuery: any) => {
+      if (locationQuery.pathname === '/home') {
+        setAsideData(allAsideData);
+      } else if (locationQuery.pathname === '/list') {
+        const data = allAsideData.filter((item) => [2, 4].includes(item.type));
+        setAsideData(data);
+      }
+    });
+    return () => unlisten();
+  }, [allAsideData]);
 
   return (
     <div className={className}>
