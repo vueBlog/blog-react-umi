@@ -11,6 +11,7 @@ const AsideAll: React.FC<{
 }> = ({ className }) => {
   const location: any = useLocation();
 
+  let currentPathName: string = location.pathname;
   const initAsideData: API.AsideItemData[] = [];
   const [allAsideData, setAllAsideData] = useState<API.AsideItemData[]>([]);
   let asideDataLength = 0;
@@ -61,11 +62,14 @@ const AsideAll: React.FC<{
 
   useEffect(() => {
     const unlisten = history.listen((locationQuery: any) => {
-      if (locationQuery.pathname === '/home') {
-        setAsideData(allAsideData);
-      } else if (locationQuery.pathname === '/list') {
-        const data = allAsideData.filter((item) => [2, 4].includes(item.type));
-        setAsideData(data);
+      if (currentPathName !== locationQuery.pathname) {
+        currentPathName = locationQuery.pathname;
+        if (locationQuery.pathname === '/home') {
+          setAsideData(allAsideData);
+        } else if (locationQuery.pathname === '/list') {
+          const data = allAsideData.filter((item) => [2, 4].includes(item.type));
+          setAsideData(data);
+        }
       }
     });
     return () => unlisten();
