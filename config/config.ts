@@ -7,6 +7,8 @@ const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
+  base: '/blog-react-umi/',
+  publicPath: '/blog-react-umi/',
   antd: {},
   dva: {
     hmr: true,
@@ -40,6 +42,10 @@ export default defineConfig({
           component: './user/login',
         },
       ],
+    },
+    {
+      path: '/',
+      redirect: '/home',
     },
     {
       path: '/',
@@ -90,10 +96,6 @@ export default defineConfig({
       icon: 'table',
       path: '/list-table',
       component: './ListTableList',
-    },
-    {
-      path: '/',
-      redirect: '/home',
     },
     {
       component: './404',
