@@ -4,20 +4,27 @@ import { message, Card } from 'antd';
 import { history, Link, useLocation } from 'umi';
 
 import { getAsideData } from '@/services/aside';
+import { isIncludesPath } from '@/utils/utils';
+
 import styles from './AsideAll.less';
 
 const AsideAll: React.FC<{
   className?: string;
 }> = ({ className }) => {
+  // 完全显示侧边栏的path
+  const allAsideArray: string[] = ['/home', '/detail/:id'];
+  // 列表显示的侧边栏
+  const listAsideArray: string[] = ['/list'];
+
   const location: any = useLocation();
 
   let currentPathName: string = location.pathname;
   const initAsideData: API.AsideItemData[] = [];
   const [allAsideData, setAllAsideData] = useState<API.AsideItemData[]>([]);
   let asideDataLength = 0;
-  if (location.pathname === '/home') {
+  if (isIncludesPath(allAsideArray, location.pathname)) {
     asideDataLength = 4;
-  } else if (location.pathname === '/list') {
+  } else if (isIncludesPath(listAsideArray, location.pathname)) {
     asideDataLength = 2;
   }
 
@@ -41,9 +48,9 @@ const AsideAll: React.FC<{
     onSuccess: (result) => {
       if (result.isok) {
         setAllAsideData(result.data.list);
-        if (location.pathname === '/home') {
+        if (isIncludesPath(allAsideArray, location.pathname)) {
           setAsideData(result.data.list);
-        } else if (location.pathname === '/list') {
+        } else if (isIncludesPath(listAsideArray, location.pathname)) {
           const data = result.data.list.filter((item) => [2, 4].includes(item.type));
           setAsideData(data);
         }
@@ -64,9 +71,9 @@ const AsideAll: React.FC<{
     const unlisten = history.listen((locationQuery: any) => {
       if (currentPathName !== locationQuery.pathname) {
         currentPathName = locationQuery.pathname;
-        if (locationQuery.pathname === '/home') {
+        if (isIncludesPath(allAsideArray, locationQuery.pathname)) {
           setAsideData(allAsideData);
-        } else if (locationQuery.pathname === '/list') {
+        } else if (isIncludesPath(listAsideArray, locationQuery.pathname)) {
           const data = allAsideData.filter((item) => [2, 4].includes(item.type));
           setAsideData(data);
         }

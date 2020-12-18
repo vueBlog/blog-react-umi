@@ -66,6 +66,13 @@ export default defineConfig({
           icon: 'ContainerOutlined',
           component: './List',
         },
+        {
+          path: '/detail/:id',
+          name: 'detail',
+          icon: 'FileTextOutlined',
+          component: './Detail',
+          hideInMenu: true,
+        },
       ],
     },
     {

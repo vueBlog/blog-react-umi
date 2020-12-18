@@ -23,8 +23,8 @@ export const footerLink: footerLinkTS[] | false = [
     blankTarget: true,
   },
   {
-    key: 'SCDN',
-    title: 'SCDN',
+    key: 'CSDN',
+    title: 'CSDN',
     href: 'https://blog.csdn.net/fxss5201',
     blankTarget: true,
   },

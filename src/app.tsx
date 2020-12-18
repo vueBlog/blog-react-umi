@@ -5,6 +5,7 @@ import { history, RequestConfig, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { ResponseError } from 'umi-request';
+import { isIncludesPath } from '@/utils/utils';
 import { queryCurrent } from './services/user';
 import defaultSettings from '../config/defaultSettings';
 import noAccessRoutes from '../config/noAccessRoutes';
@@ -25,7 +26,7 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
   // 如果是登录页面，不执行
-  if (!noAccessRoutes.includes(history.location.pathname)) {
+  if (!isIncludesPath(noAccessRoutes, history.location.pathname)) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -56,11 +57,11 @@ export const layout = ({
       );
     let res;
     if (item.access) {
-      if (initialState.currentUser?.admin === 1 && item.access === 'canAdmin') {
+      if (initialState?.currentUser?.admin === 1 && item.access === 'canAdmin') {
         res = domBody;
       }
       if (
-        (initialState.currentUser?.admin === 1 || initialState.currentUser?.authority === 1) &&
+        (initialState?.currentUser?.admin === 1 || initialState?.currentUser?.authority === 1) &&
         item.access === 'canUser'
       ) {
         res = domBody;
@@ -81,7 +82,7 @@ export const layout = ({
       const { currentUser } = initialState;
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!noAccessRoutes.includes(location.pathname) && !currentUser?.id) {
+      if (!isIncludesPath(noAccessRoutes, location.pathname) && !currentUser?.id) {
         history.push('/user/login');
       }
     },

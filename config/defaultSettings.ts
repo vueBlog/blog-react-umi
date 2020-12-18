@@ -13,7 +13,7 @@ export default {
     locale: true,
   },
   title: '樊小书生',
-  logo: 'https://www.fxss.work/vue-blog/img/logo.10ad6756.jpg',
+  logo: 'https://img.fxss.work/article-160817733700085-production.jpg',
   pwa: false,
   iconfontUrl: '',
 } as LayoutSettings & {

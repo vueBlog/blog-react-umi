@@ -1,4 +1,6 @@
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
+import pathToRegexp from 'path-to-regexp';
+
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
 
 export const isUrl = (path: string): boolean => reg.test(path);
@@ -18,3 +20,23 @@ export const isAntDesignProOrDev = (): boolean => {
   }
   return isAntDesignPro();
 };
+
+/**
+ * 某个path是否属于列表中的一个连接，比如：
+ * list: ['/user/login', '/home', '/list', '/detail/:id', '/']
+ * path1: '/detail/1'
+ * path2: '/detail'
+ * isIncludesPath(list, path1) => true
+ * isIncludesPath(list, path2) => false
+ */
+export function isIncludesPath(list: string[], path: string): boolean {
+  let isFlag: boolean = false;
+  for (let index = 0, { length } = list; index < length; index += 1) {
+    const regexp = pathToRegexp(list[index]);
+    if (regexp.test(path)) {
+      isFlag = true;
+      break;
+    }
+  }
+  return isFlag;
+}
