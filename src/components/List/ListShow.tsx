@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { List, Skeleton, Space, Tag } from 'antd';
 import { HighlightOutlined, LikeOutlined, EyeOutlined } from '@ant-design/icons';
 
+import { Link } from 'umi';
 import styles from './ListShow.less';
 
 interface IconTextTS {
@@ -102,10 +103,10 @@ const ListShow: React.FC<ListShowTS> = ({ loading, listData, total, page, pageCh
           >
             <List.Item.Meta
               title={
-                <a>
+                <Link to={`/detail/${item.articleId}`}>
                   <Tag color="blue">{['原创', '转载', '翻译'][item.articleNature]}</Tag>
                   {item.articleTitle}
-                </a>
+                </Link>
               }
               description={item.articleSubTitle}
             />

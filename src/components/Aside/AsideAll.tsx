@@ -96,7 +96,7 @@ const AsideAll: React.FC<{
               to={
                 [2, 4].includes(item.type)
                   ? `/list?${item.type === 2 ? 'columnId' : 'dateTime'}=${itemInfo.id}`
-                  : '/detail'
+                  : `/detail/${itemInfo.id}`
               }
               key={itemInfo.id}
               className={styles.card_item}
