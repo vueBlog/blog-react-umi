@@ -101,7 +101,9 @@ const AsideAll: React.FC<{
               key={itemInfo.id}
               className={styles.card_item}
             >
-              <span className={styles.card_item_number}>{itemInfo.num} views</span>
+              <span className={styles.card_item_number}>
+                {itemInfo.num} {[2, 4].includes(item.type) ? '篇' : 'views'}
+              </span>
               <div title={itemInfo.title} className={styles.card_item_title}>
                 {itemInfo.title}
               </div>
