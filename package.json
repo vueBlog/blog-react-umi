@@ -49,6 +49,7 @@
     "@ant-design/pro-descriptions": "^1.0.16",
     "@ant-design/pro-layout": "^6.4.16",
     "@ant-design/pro-table": "^2.7.2",
+    "@types/clipboard": "^2.0.1",
     "ahooks": "^2.8.1",
     "antd": "^4.6.3",
     "blueimp-md5": "^2.18.0",
