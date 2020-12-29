@@ -62,7 +62,7 @@ class DetailShow extends React.Component {
       const regexp = pathToRegexp('/detail/:id');
       const locationRegexpResult = regexp.exec(location.pathname);
       const articleId = locationRegexpResult && locationRegexpResult[1];
-      if (articleId) {
+      if (articleId && location?.pathname !== this.props?.location?.pathname) {
         this.getDetailInfo(articleId);
       }
     });
