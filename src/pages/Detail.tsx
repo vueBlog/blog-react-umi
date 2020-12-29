@@ -22,7 +22,9 @@ const PageHeaderTitle: React.FC<detailInfoTs> = (info) => {
   return (
     <div className={styles.page_header_title}>
       <Tag color="blue">{['原创', '转载', '翻译'][info.articleNature]}</Tag>
-      <span>{info.articleTitle}</span>
+      <span className={classNames('ellipsis')} title={info.articleTitle}>
+        {info.articleTitle}
+      </span>
     </div>
   );
 };
