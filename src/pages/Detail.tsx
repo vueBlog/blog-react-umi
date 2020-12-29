@@ -30,6 +30,7 @@ const PageHeaderTitle: React.FC<detailInfoTs> = (info) => {
 };
 
 let unlisten: any;
+let clipboard: any = null;
 
 class DetailShow extends React.Component {
   constructor(props: any) {
@@ -50,13 +51,15 @@ class DetailShow extends React.Component {
     this.getDetailInfo(this.props?.match?.params?.id);
     window.addEventListener('scroll', this.pageScroll, false);
 
-    const clipboard = new Clipboard('.copy-btn');
-    clipboard.on('success', () => {
-      message.success('复制成功');
-    });
-    clipboard.on('error', () => {
-      message.error('复制失败');
-    });
+    if (!clipboard) {
+      clipboard = new Clipboard('.copy-btn');
+      clipboard.on('success', () => {
+        message.success('复制成功');
+      });
+      clipboard.on('error', () => {
+        message.error('复制失败');
+      });
+    }
 
     unlisten = history.listen((location: any) => {
       const regexp = pathToRegexp('/detail/:id');
