@@ -87,6 +87,13 @@ class DetailShow extends React.Component {
         this.setState({ nextInfo: res.nextInfo });
         this.setState({ prevInfo: res.prevInfo });
         hljs.registerLanguage('javascript', javascript);
+        setTimeout(() => {
+          if (this.props?.location?.hash) {
+            let hash = decodeURI(this.props?.location?.hash);
+            hash = hash.replace(/`/g, '').replace(/\./g, '').replace(/\(\)/g, '').toLowerCase();
+            document.querySelector(hash)?.scrollIntoView({ block: 'center', inline: 'center' });
+          }
+        }, 100);
       })
       .catch((err) => {
         console.log(err);
